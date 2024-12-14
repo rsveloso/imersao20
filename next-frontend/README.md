@@ -2,7 +2,7 @@
 
 ## Descrição
 
-Repositório do Django (admin dos vídeos)
+Repositório do Next.js (front-end da aplicação).
 
 ## Requerimentos
 
@@ -10,7 +10,7 @@ Repositório do Django (admin dos vídeos)
 
 1. Acesse o [Google Cloud Platform](https://cloud.google.com/).
 2. Crie um novo projeto.
-3. Ative a API do Places e Directions do Google Maps.
+3. Ative a API do Places, Directions e Maps JavaScript do Google Maps.
 4. Guarde a chave de API gerada.
 
 ## Rodar a aplicação
@@ -21,28 +21,17 @@ Gere o arquivo `.env` através do comando:
 cp .env.example .env
 ```
 
-Coloque a chave de API gerada no Google Cloud Platform no arquivo `.env`.
-
-Levante os containers do Nest.js e MongoDB:
+Instale as dependências:
 
 ```bash
-docker-compose up -d
-```
-
-Entre no container do Nest.js e instale as dependências:
-
-```bash
-docker-compose exec app bash
 npm install
 ```
 
 Rode o servidor:
 
 ```bash
-npm run start:dev
+npm run dev
 ```
-
-As especificações das chamadas HTTP estão no arquivo `api.http`. Você pode usar a extensão `REST Client` do VSCode para fazer as chamadas.
 
 
 
