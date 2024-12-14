@@ -70,8 +70,7 @@ func RouteCreatedHandler(event *RouteCreatedEvent, routeService *RouteService, m
 	if err != nil {
 		return nil, err
 	}
-	freightCalculatedEvent := NewFreightCalculatedEvent(routeCreated.ID, routeCreated.FreightPrice)
-	return freightCalculatedEvent, nil
+	return NewFreightCalculatedEvent(routeCreated.ID, routeCreated.FreightPrice), nil
 }
 
 func DeliveryStartedHandler(event *DeliveryStartedEvent, routeService *RouteService, mongoClient *mongo.Client, ch chan *DriverMovedEvent) error {
@@ -80,48 +79,12 @@ func DeliveryStartedHandler(event *DeliveryStartedEvent, routeService *RouteServ
 		return err
 	}
 
-	driverMovedEvent := NewDriverMovedEvent(route.ID, 0, 0)
-	for _, direction := range route.Directions {
-		driverMovedEvent.RouteID = route.ID
-		driverMovedEvent.Lat = direction.Lat
-		driverMovedEvent.Lng = direction.Lng
-		ch <- driverMovedEvent
-		time.Sleep(1 * time.Second)
-	}
-	return nil
-}
-
-// event hub to handle events
-type EventHub struct {
-	routeService        *RouteService
-	mongoClient         *mongo.Client
-	chDriverMoved       chan *DriverMovedEvent
-	chFrieghtCalculated chan *FreightCalculatedEvent
-}
-
-func NewEventHub(routeService *RouteService, mongoClient *mongo.Client, chDriverMoved chan *DriverMovedEvent, chFreightCalculated chan *FreightCalculatedEvent) *EventHub {
-	return &EventHub{
-		routeService:        routeService,
-		mongoClient:         mongoClient,
-		chDriverMoved:       chDriverMoved,
-		chFrieghtCalculated: chFreightCalculated,
-	}
-}
-
-func (eh *EventHub) HandleEvent(event interface{}) error {
-	switch e := event.(type) {
-	case RouteCreatedEvent:
-		freightCalculatedEvent, err := RouteCreatedHandler(&e, eh.routeService, eh.mongoClient)
-		if err != nil {
-			return err
+	go func() {
+		for _, direction := range route.Directions {
+			dme := NewDriverMovedEvent(route.ID, direction.Lat, direction.Lng)
+			ch <- dme
+			time.Sleep(1 * time.Second)
 		}
-		// send the event to the channel
-		eh.chFrieghtCalculated <- freightCalculatedEvent
-	case DeliveryStartedEvent:
-		err := DeliveryStartedHandler(&e, eh.routeService, eh.mongoClient, eh.chDriverMoved)
-		if err != nil {
-			return err
-		}
-	}
+	}()
 	return nil
 }

@@ -7,7 +7,7 @@ export async function GET(
   { params }: { params: Promise<{ routeId: string }> }
 ) {
   const { routeId } = await params;
-  const response = await fetch(`http://localhost:3000/routes/${routeId}`, {
+  const response = await fetch(`${process.env.NEST_API_URL}/routes/${routeId}`, {
     cache: "force-cache",
     next: {
       tags: [`routes-${routeId}`, "routes"],

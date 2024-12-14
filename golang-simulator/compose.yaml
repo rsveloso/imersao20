@@ -1,9 +1,24 @@
+include:
+  - ../mongodb/docker-compose.yaml
+  - ../kafka/docker-compose.yaml
+
 services:
-  mongo:
-    image: mongo:latest
-    container_name: mongo
-    ports:
-      - "27017:27017"
+
+  simulator:
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_URI=mongodb://root:root@mongo:27017/routes?authSource=admin&directConnection=true
+      - KAFKA_BROKER=kafka:9092
+      - KAFKA_ROUTE_TOPIC=route
+      - KAFKA_FREIGHT_TOPIC=freight
+      - KAFKA_SIMULATION_TOPIC=simulation
+      - KAFKA_GROUP_ID=route-group
+    depends_on:
+      - mongo
+      - kafka
+    volumes:
+      - .:/app
+
+  

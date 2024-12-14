@@ -52,27 +52,23 @@ func (fs *FreightService) Calculate(distance int) float64 {
 }
 
 func (rs *RouteService) CreateRoute(route Route) (Route, error) {
-	// Use FreightService to perform necessary calculations
 	freightCost := rs.FreightService.Calculate(route.Distance)
 	route.FreightPrice = freightCost
 	fmt.Printf("Calculated freight cost: %.2f\n", freightCost)
 
-	// Add freight cost to the route as needed (assume you want to store it)
 	update := bson.M{
 		"$set": bson.M{
 			"distance":      route.Distance,
 			"directions":    route.Directions,
-			"freight_price": freightCost, // Store the calculated freight cost
+			"freight_price": freightCost,
 		},
 	}
 
-	// Filter to find document by ID
 	filter := bson.M{"_id": route.ID}
 
 	// Upsert option to insert if not exists
 	opts := options.Update().SetUpsert(true)
 
-	// Perform the update or insert operation
 	_, err := rs.mongo.Database("routes").Collection("routes").UpdateOne(nil, filter, update, opts)
 
 	return route, err

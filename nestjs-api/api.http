@@ -22,7 +22,10 @@ Content-Type: application/json
 }
 
 ###
+POST http://localhost:3000/routes/67596c02396abb18d0c69574/start
+
+###
 GET http://localhost:3000/routes
 
 ###
-GET http://localhost:3000/routes/674ef78bab1148ea9161c23b
+GET http://localhost:3000/routes/674ef78bab1148ea9161c23b 
