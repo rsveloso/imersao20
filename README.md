@@ -23,7 +23,7 @@ Se você estiver no Windows, use o WSL 2. Veja nosso tutorial [https://github.co
 
 ## Rodar a aplicação
 
-Ao final das aulas teremos todo o projeto, no momento estamos na aula 02 do Next.js, então, acessar a pasta `next-frontend` e siga as instruções.
+Ao final das aulas teremos todo o projeto, no momento estamos na aula 03 do Next.js (websocket), então, acessar as pastas `next-frontend` e `nestjs-api` e siga as instruções.
 
 
 ## Arquitetura do projeto
