@@ -1,9 +1,5 @@
 # Imersão Fullcycle 20 - Sistema de rastreamento de veículos
 
-![Imersão Full Stack && Full Cycle](https://events-fullcycle.s3.amazonaws.com/events-fullcycle/static/site/img/grupo_4417.png)
-
-Participe gratuitamente: https://imersao.fullcycle.com.br/
-
 ## Requerimentos
 
 Cada projeto tem seus próprios requerimentos, mas uma ferramenta é comum a todos: o Docker.
